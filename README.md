@@ -17,6 +17,10 @@ A drowning-detection, graded-alerting and closed-loop response platform for swim
 ![mAP](https://img.shields.io/badge/mAP%400.5-0.8330-2f9e44?style=flat-square)
 ![License](https://img.shields.io/badge/license-AGPL--3.0-e8590c?style=flat-square)
 
+[![Repo](https://img.shields.io/badge/repo-Cyan--carp%2FSmartPool-495057?style=flat-square)](https://github.com/Cyan-carp/SmartPool)
+[![Release](https://img.shields.io/github/v/release/Cyan-carp/SmartPool?style=flat-square&color=e8590c)](https://github.com/Cyan-carp/SmartPool/releases)
+[![Last commit](https://img.shields.io/github/last-commit/Cyan-carp/SmartPool?style=flat-square&color=868e96)](https://github.com/Cyan-carp/SmartPool/commits/main)
+
 </div>
 
 ## 这是什么
@@ -164,7 +168,7 @@ pip install seaborn thop timm einops pyyaml
 cd selective_scan && pip install -v --no-cache-dir --force-reinstall . && cd ..
 pip install -v -e .
 
-# 2. 训练或使用已有权重
+# 2. 获取权重：可从 v0.1.0 Release 下载 mambayolo9-best.pt，或按下面的命令自行训练
 python mbyolo_train.py --task train --data ./Drowning/data.yaml `
   --config ultralytics/cfg/models/mamba-yolo/Mamba-YOLO-T.yaml `
   --epochs 150 --batch_size 16 --optimizer Adam --lr0 0.001 --name mambayolo9
@@ -244,7 +248,7 @@ docker cp ./artifacts/demo.json smartpool-ai:/app/artifacts/
 **仓库公开的是源码、配置模板与设计文档。** 以下内容不随 Git 提供，需自行准备：
 
 - **数据集**：`drowning-detect` v7 来自 Roboflow（CC BY 4.0），需自行下载并修改 `training/data.yaml` 中的路径
-- **模型权重**：`best.pt` 约 35 MB（含优化器状态），建议通过 Release 分发或自行训练
+- **模型权重**：约 34.9 MB（含优化器状态），可从 [v0.1.0 Release](https://github.com/Cyan-carp/SmartPool/releases/tag/v0.1.0) 下载 `mambayolo9-best.pt`，或按上文自行训练
 - **回放结果**：`artifacts/` 下的 JSON 为运行产物，不入库
 - **私密配置**：`deploy/.env`、数据库卷、证书文件
 
