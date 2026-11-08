@@ -1,6 +1,8 @@
-train: /root/Mamba-YOLO-main/Mamba-YOLO-main/Drowning/train/images/
-val: /root/Mamba-YOLO-main/Mamba-YOLO-main/Drowning/valid/images/
-test: /root/Mamba-YOLO-main/Mamba-YOLO-main/Drowning/test/images/
+# 数据集需自行下载（见下方 roboflow 字段），解压后把路径改成实际位置
+# 相对路径以本文件所在目录为基准
+train: ./Drowning/train/images/
+val: ./Drowning/valid/images/
+test: ./Drowning/test/images/
 
 nc: 2
 names: ['Drowning', 'Swimming']
