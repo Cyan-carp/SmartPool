@@ -37,7 +37,8 @@ venv/
 *.ckpt
 training/Drowning/
 training/datasets/
-data/
+# 只忽略仓库根的数据目录：ultralytics/data/ 是数据加载源码，必须入库
+/data/
 
 # ---------- 运行产物 ----------
 # 回放 JSON、截图、导出报表均为运行产物
