@@ -1,0 +1,26 @@
+# 真实模型（AI_DETECTOR_PROVIDER=mamba-yolo）专用依赖
+#
+# 默认的 requirements.txt 只装 FastAPI 三件套，保证占位模式镜像轻量。
+# 需要跑 Mamba-YOLO 时再叠加本文件：pip install -r requirements.txt -r requirements-ml.txt
+#
+# 版本与训练环境保持一致（RTX 4090 / torch 2.7.1 / cu118）。
+# 换 CUDA 版本时 torch 与 torchvision 必须成对调整，否则 selective_scan 编译不过。
+
+torch==2.7.1
+torchvision==0.22.1
+
+# 检测框架（本项目用的是改过的 8.2.29，正式部署建议直接用 03_模型代码/Mamba-YOLO 源码安装）
+ultralytics==8.2.29
+
+# 图像解码与推理输入
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
+
+# FastAPI 文件上传（POST /infer/image 用）
+python-multipart==0.0.9
+
+# ---------------------------------------------------------------------------
+# 还需要安装本项目的 selective_scan CUDA 扩展（不在 PyPI）：
+#   cd 03_模型代码/Mamba-YOLO/selective_scan && pip install -v --no-cache-dir .
+# 该扩展必须与上面的 torch/CUDA 版本匹配，建议直接在训练机上构建后整体打包镜像。
+# ---------------------------------------------------------------------------

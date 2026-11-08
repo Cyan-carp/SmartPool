@@ -1,0 +1,152 @@
+/* 全站通用类，在 tokens.css 与 Element Plus 样式之后引入 */
+
+.sp-panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  padding: 16px 18px 18px;
+}
+
+.sp-panel__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.sp-dim {
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+.sp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--card);
+  color: var(--ink-3);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sp-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+}
+
+.sp-badge--live {
+  color: var(--ok);
+  border-color: #2c6c95;
+  background: var(--ok-soft);
+}
+
+.sp-badge--mock {
+  color: var(--violet);
+  border-color: #3b3670;
+  background: var(--violet-soft);
+}
+
+.sp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 50vh;
+  color: var(--ink-4);
+  text-align: center;
+}
+
+/* Element Plus 组件的收口微调 */
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+.el-button {
+  font-weight: 550;
+  letter-spacing: 0.01em;
+}
+
+.el-button--primary {
+  box-shadow: 0 2px 8px var(--brand-glow);
+}
+
+.el-button:focus-visible,
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 3px var(--brand-soft) !important;
+}
+
+.el-input__wrapper,
+.el-select__wrapper {
+  border-radius: var(--r-md);
+}
+
+.el-table {
+  font-size: 12.5px;
+}
+
+.el-table th.el-table__cell {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.el-table .cell {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.el-table__inner-wrapper::before {
+  background-color: var(--line-soft);
+}
+
+.el-dialog,
+.el-drawer,
+.el-message-box {
+  border-radius: var(--r-xl);
+}
+
+.el-drawer__header {
+  margin-bottom: 12px;
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.el-descriptions__label.el-descriptions__cell {
+  color: var(--ink-3);
+}
+
+.el-progress-bar__outer,
+.el-slider__runway {
+  background: var(--line-soft);
+}
+
+.el-popper,
+.el-dropdown-menu,
+.el-message,
+.el-notification {
+  border-radius: var(--r-lg);
+}
+
+.el-pagination {
+  --el-pagination-button-bg-color: var(--card);
+  font-weight: 550;
+}

@@ -1,0 +1,229 @@
+/* SmartPool 设计令牌
+   配色：深空蓝灰 + 电光蓝（低亮度指挥台风格，适合长时间值守）
+   不使用纯黑与纯白：底色 #0d1621、正文 #dfe9f3，降低全屏发光面积。
+   色值、圆角、阴影、尺寸只在此文件定义，组件一律引用变量。
+   :root:root 用于压过 Element Plus 官方 html.dark 变量。 */
+:root:root {
+  color-scheme: dark;
+
+  /* 面：由深到浅，卡片比底色亮一档即可，避免大面积高亮 */
+  --bg: #0d1621;
+  --bg-deep: #09111a;
+  --card: #16232f;
+  --card-soft: #1a2b3a;
+  --card-hover: #1e3142;
+  --inset: #101d29;
+
+  /* 线：低对比度但可辨 */
+  --line: #2a3f52;
+  --line-soft: #213344;
+  --line-strong: #3a566c;
+
+  /* 字：柔和冷白，不刺眼；层级靠亮度与字重区分 */
+  --ink: #dfe9f3;
+  --ink-2: #cbdcea;
+  --ink-3: #a9bfd1;
+  --ink-4: #8fa8bc;
+  --ink-placeholder: #6c8397;
+
+  /* 主色：电光蓝，仅用于选中态、按钮、关键数值与高亮 */
+  --brand: #43b9f5;
+  --brand-deep: #2f92cc;
+  --brand-bright: #6bd0ff;
+  --brand-soft: #12293a;
+  --brand-line: #2c6c95;
+  --brand-glow: rgba(67, 185, 245, .28);
+
+  /* 语义色：在深底上提亮，且只做点缀 */
+  --ok: #36d1a6;
+  --ok-deep: #22a984;
+  --ok-soft: #102b30;
+  --notice: #e9c46a;
+  --notice-soft: #2a2418;
+  --warn: #f5a25c;
+  --warn-deep: #d98542;
+  --warn-soft: #2c2118;
+  --bad: #ff6b72;
+  --bad-deep: #d94f57;
+  --bad-soft: #2c1a20;
+  --info: #43b9f5;
+  --info-soft: #12293a;
+  --violet: #9a8cff;
+  --violet-soft: #211f36;
+
+  /* 圆角 / 阴影：深色下靠边缘暗影与一层内侧高光拉开层次 */
+  --r-xl: 10px;
+  --r-lg: 8px;
+  --r-md: 6px;
+  --r-sm: 5px;
+  --r-pill: 999px;
+
+  --shadow-1: 0 1px 2px rgba(2, 8, 14, .28), 0 8px 20px -10px rgba(2, 8, 14, .55),
+    inset 0 1px 0 rgba(160, 205, 240, .04);
+  --shadow-2: 0 2px 6px rgba(2, 8, 14, .32), 0 16px 34px -12px rgba(2, 8, 14, .6),
+    inset 0 1px 0 rgba(160, 205, 240, .05);
+  --shadow-3: 0 20px 50px rgba(2, 8, 14, .68), 0 6px 16px rgba(2, 8, 14, .38);
+
+  --font: "Inter", "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont,
+    "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  --font-num: var(--font);
+  --rail-w: 64px;
+  --top-h: 60px;
+
+  /* 兼容原有 --sp-* 变量名（各业务页面直接使用，无需逐个改动） */
+  --sp-bg: var(--bg);
+  --sp-panel: var(--card);
+  --sp-panel-2: var(--card-soft);
+  --sp-border: var(--line);
+  --sp-text: var(--ink);
+  --sp-text-dim: var(--ink-3);
+  --sp-accent: var(--brand);
+  --sp-ok: var(--ok);
+  --sp-notice: var(--notice);
+  --sp-warn: var(--warn);
+  --sp-danger: var(--bad);
+
+  /* Element Plus 主题接管：表格 / 表单 / 弹层 / 标签统一到深色令牌 */
+  --el-color-primary: #43b9f5;
+  --el-color-primary-light-3: #74cbf8;
+  --el-color-primary-light-5: #9bdcfb;
+  --el-color-primary-light-7: #c1eafd;
+  --el-color-primary-light-8: #d6f2fe;
+  --el-color-primary-light-9: #152f42;
+  --el-color-primary-dark-2: #2f92cc;
+  --el-color-success: #36d1a6;
+  --el-color-success-light-3: #6cdec0;
+  --el-color-success-light-5: #9be9d3;
+  --el-color-success-light-7: #c5f2e4;
+  --el-color-success-light-8: #d9f7ee;
+  --el-color-success-light-9: #113229;
+  --el-color-success-dark-2: #22a984;
+  --el-color-warning: #f5a25c;
+  --el-color-warning-light-3: #f7b77f;
+  --el-color-warning-light-5: #f9cba8;
+  --el-color-warning-light-7: #fbdec9;
+  --el-color-warning-light-8: #fdebd8;
+  --el-color-warning-light-9: #2c2118;
+  --el-color-warning-dark-2: #d98542;
+  --el-color-danger: #ff6b72;
+  --el-color-danger-light-3: #ff9298;
+  --el-color-danger-light-5: #ffb0b4;
+  --el-color-danger-light-7: #ffcdcf;
+  --el-color-danger-light-8: #ffe0e2;
+  --el-color-danger-light-9: #2c1a20;
+  --el-color-danger-dark-2: #d94f57;
+  --el-color-error: #ff6b72;
+  --el-color-error-light-3: #ff9298;
+  --el-color-error-light-5: #ffb0b4;
+  --el-color-error-light-7: #ffcdcf;
+  --el-color-error-light-8: #ffe0e2;
+  --el-color-error-light-9: #2c1a20;
+  --el-color-error-dark-2: #d94f57;
+  --el-color-info: #8298aa;
+  --el-color-info-light-8: #1c2c3b;
+  --el-color-info-light-9: #172736;
+  --el-color-info-dark-2: #6c8397;
+
+  --el-bg-color: #16232f;
+  --el-bg-color-page: #0d1621;
+  --el-bg-color-overlay: #16232f;
+  --el-fill-color: #1a2b3a;
+  --el-fill-color-light: #1e3040;
+  --el-fill-color-lighter: #172736;
+  --el-fill-color-blank: #101d29;
+  --el-fill-color-dark: #22364a;
+  --el-fill-color-darker: #2a3f52;
+  --el-disabled-bg-color: #172736;
+  --el-disabled-border-color: #2a3f52;
+
+  --el-text-color-primary: #dfe9f3;
+  --el-text-color-regular: #c2d2e0;
+  --el-text-color-secondary: #9db2c4;
+  --el-text-color-placeholder: #6c8397;
+  --el-text-color-disabled: #54697b;
+
+  --el-border-color: #2a3f52;
+  --el-border-color-light: #213344;
+  --el-border-color-lighter: #1c2d3e;
+  --el-border-color-extra-light: #18283a;
+  --el-border-color-dark: #3a566c;
+  --el-border-color-darker: #46617a;
+
+  --el-input-bg-color: #101d29;
+  --el-input-border-color: #2a3f52;
+  --el-input-hover-border-color: #3a566c;
+  --el-input-focus-border-color: #43b9f5;
+  --el-input-text-color: #dfe9f3;
+  --el-table-bg-color: #16232f;
+  --el-table-tr-bg-color: #16232f;
+  --el-table-border-color: #213344;
+  --el-table-header-bg-color: #1a2b3a;
+  --el-table-header-text-color: #a9bfd1;
+  --el-table-text-color: #c2d2e0;
+  --el-table-row-hover-bg-color: #1e3142;
+  --el-table-current-row-bg-color: #1a3346;
+
+  --el-border-radius-base: 6px;
+  --el-border-radius-small: 5px;
+  --el-border-radius-round: 999px;
+  --el-font-family: var(--font);
+  --el-font-size-base: 13px;
+  --el-box-shadow-light: var(--shadow-1);
+  --el-mask-color: rgba(4, 10, 16, .72);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 560px at 6% -16%, rgba(67, 185, 245, .075), transparent 62%),
+    radial-gradient(900px 520px at 100% 0%, rgba(154, 140, 255, .05), transparent 60%),
+    linear-gradient(180deg, #0d1621 0%, #0c141f 55%, #09111a 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(67, 185, 245, .28);
+  color: #f0f7ff;
+}
+
+.num,
+.sp-panel__title b,
+.metric__value,
+.card__value,
+.check__value {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #31485c;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #456480;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

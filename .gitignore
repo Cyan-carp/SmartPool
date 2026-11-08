@@ -1,0 +1,60 @@
+# ---------- 依赖 ----------
+node_modules/
+.pnpm-store/
+
+# ---------- 构建产物 ----------
+dist/
+build/
+target/
+*.class
+*.jar
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# ---------- 配置与密钥 ----------
+# deploy/.env 由 .env.example 复制生成，绝不入库
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ---------- 模型权重与数据 ----------
+# 权重体积大，通过 Release 分发；数据集受 CC BY 4.0 约束，需自行下载
+*.pt
+*.pth
+*.onnx
+*.engine
+*.ckpt
+training/Drowning/
+training/datasets/
+data/
+
+# ---------- 运行产物 ----------
+# 回放 JSON、截图、导出报表均为运行产物
+artifacts/
+runs/
+output_dir/
+*.log
+logs/
+
+# ---------- 编辑器与系统 ----------
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ---------- Obsidian 工作区状态 ----------
+notes/.obsidian/workspace*.json
+notes/.obsidian/cache/

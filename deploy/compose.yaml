@@ -1,0 +1,145 @@
+name: smartpool
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: smartpool-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-smartpool}
+      MYSQL_USER: ${MYSQL_USER:-smartpool}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    volumes:
+      - smartpool-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    restart: unless-stopped
+    logging: &default-logging
+      driver: json-file
+      options:
+        max-size: 50m
+        max-file: "3"
+
+  redis:
+    image: redis:7.4.5-alpine
+    container_name: smartpool-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - smartpool-redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+    logging: *default-logging
+
+  simulator:
+    build:
+      context: ../stages/01-simulator
+    container_name: smartpool-simulator
+    environment:
+      TZ: Asia/Shanghai
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://127.0.0.1:8010/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    logging: *default-logging
+
+  ai:
+    build:
+      context: ../stages/03-ai-service
+    container_name: smartpool-ai
+    environment:
+      TZ: Asia/Shanghai
+      SIMULATOR_URL: http://simulator:8010
+      AI_DETECTOR_PROVIDER: ${AI_DETECTOR_PROVIDER:-mock}
+      AI_DEVICE: ${AI_DEVICE:-cpu}
+      # 实时画面：留空则不启用 MJPEG 推流，服务行为与之前完全一致。
+      # 可填容器内路径 /data/demo.mp4、rtsp://... 或 /app/artifacts/demo.mp4
+      AI_VIDEO_SOURCE: ${AI_VIDEO_SOURCE:-}
+      AI_VIDEO_STRIDE: ${AI_VIDEO_STRIDE:-5}
+      AI_STREAM_MAX_WIDTH: ${AI_STREAM_MAX_WIDTH:-960}
+      AI_REPLAY_DIR: /app/artifacts
+      # 回放 JSON 用 docker cp 放进容器（挂载在此不可行：
+      # 从本地 --context 执行时相对卷路径会按本地文件系统解析，远程找不到）
+    depends_on:
+      simulator:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/health')\""]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    logging: *default-logging
+
+  backend:
+    build:
+      context: ../stages/02-backend
+    container_name: smartpool-backend
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_HOST: mysql
+      MYSQL_PORT: "3306"
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-smartpool}
+      MYSQL_USER: ${MYSQL_USER:-smartpool}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      JWT_SECRET: ${JWT_SECRET}
+      AI_URL: http://ai:8000
+      SIMULATOR_URL: http://simulator:8010
+      LIVE_PUSH_INTERVAL_MS: ${LIVE_PUSH_INTERVAL_MS:-100}
+      AI_DETECTOR_PROVIDER: ${AI_DETECTOR_PROVIDER:-mock}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ai:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
+    restart: unless-stopped
+    logging: *default-logging
+
+  nginx:
+    build:
+      context: ../stages/04-frontend
+    container_name: smartpool-nginx
+    ports:
+      - "127.0.0.1:18080:80"
+    depends_on:
+      backend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    logging: *default-logging
+
+volumes:
+  smartpool-mysql-data:
+    name: smartpool-mysql-data
+  smartpool-redis-data:
+    name: smartpool-redis-data

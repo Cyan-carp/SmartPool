@@ -1,0 +1,11 @@
+# MJPEG 推流依赖（不含模型运行时）
+#
+# 与 requirements-ml.txt 的区别：
+#   · 这个只有图像解码/编码，约 80MB，镜像能接受
+#   · requirements-ml.txt 带 torch + ultralytics，几个 GB，只在 GPU 机器上用
+#
+# 装了本文件就能用 AI_VIDEO_SOURCE 开启实时画面：
+# 即使检测器是占位实现，也能把真实摄像头画面推出去（框为空，HUD 标明占位）。
+
+opencv-python-headless==4.10.0.84
+numpy==1.26.4
