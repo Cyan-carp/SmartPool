@@ -23,7 +23,7 @@ A drowning-detection, graded-alerting and closed-loop response platform for swim
 
 </div>
 
-## 这是什么
+## 系统概述
 
 一个从零写起的泳池安全监测平台：把监控画面接进来，跑人体检测，按位置与停留时间累计风险，触发分级告警，交由值班人员确认处置，全过程留痕可回溯。
 
@@ -277,7 +277,7 @@ by the Free Software Foundation, either version 3 of the License, or
 
 ## 目录
 
-- [这是什么](#这是什么)
+- [系统概述](#系统概述)
 - [主要功能](#主要功能)
 - [技术架构](#技术架构)
 - [检测模型](#检测模型)
